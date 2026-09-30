@@ -213,7 +213,26 @@ class TransferEngine:
 
     async def resolve_message(self, link: str):
         peer, message_id = parse_message_link(link)
-        entity = await self.user.get_entity(peer)
+
+        if isinstance(peer, str):
+            entity = await self.user.get_entity(peer)
+        else:
+            try:
+                entity = await self.user.get_entity(peer)
+            except ValueError:
+                # Fresh StringSession may not have the /c/ chat entity cached.
+                # Refresh dialogs and resolve the exact peer ID from them.
+                entity = None
+                async for dialog in self.user.iter_dialogs():
+                    if int(dialog.id) == int(peer):
+                        entity = dialog.entity
+                        break
+                if entity is None:
+                    raise ValueError(
+                        "لم يتم العثور على المجموعة في جلسة الحساب الثاني. "
+                        "تأكد من أن الحساب عضو فيها وأن Telegram أظهرها للحساب."
+                    )
+
         message = await self.user.get_messages(entity, ids=message_id)
 
         if not message:
