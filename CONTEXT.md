@@ -96,6 +96,12 @@ First implementation commit:
 bot.py blob after creation:
 32e54058b9c7e5bf9c34c9cbb925998aeb2ec531
 
+Latest bot.py update commit:
+8b325c771596fced6f199a56776cffbc033c875e
+
+Latest bot.py blob:
+5c8bedbeb4738c2385daa8e85caa81cd58570b25
+
 ## Important Telegram API findings verified during development
 
 - Telegram's official API documentation says non-protected media can be
@@ -130,6 +136,10 @@ project is being implemented independently and kept intentionally smaller.
 5. Improve the fallback to chunked streaming without a full temporary file if
    a reliable implementation is needed.
 6. Add optional destination modes after the Saved Messages path is proven.
+
+## Validation note
+
+The GitHub connector was used to inspect the repository and verify the committed source. A local clone/syntax test could not be executed in this environment because outbound DNS/network access from the container is unavailable. A real Telegram test is still required before relying on the bot for large protected media.
 
 ## Session history
 
